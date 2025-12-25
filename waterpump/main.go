@@ -16,10 +16,12 @@ import (
 const OptionsFile = "/data/options.json"
 
 type OptionsData struct {
-	BrokerURL  string `json:"broker_url"`
-	BrokerPort int    `json:"broker_port"`
-	DeviceID   string `json:"device_id"`
-	DeviceName string `json:"device_name"`
+	BrokerURL      string `json:"broker_url"`
+	BrokerPort     int    `json:"broker_port"`
+	BrokerUsername string `json:"broker_username"`
+	BrokerPassword string `json:"broker_password"`
+	DeviceID       string `json:"device_id"`
+	DeviceName     string `json:"device_name"`
 }
 
 var (
@@ -38,6 +40,14 @@ func main() {
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(fmt.Sprintf("tcp://%s:%d", Options.BrokerURL, Options.BrokerPort))
 	opts.SetClientID("device_" + Options.DeviceID)
+
+	if Options.BrokerUsername != "" {
+		opts.SetUsername(Options.BrokerUsername)
+	}
+	if Options.BrokerPassword != "" {
+		opts.SetPassword(Options.BrokerPassword)
+	}
+
 	opts.SetCleanSession(true)
 
 	opts.SetWill(AvailabilityTopic, "offline", 1, true)
