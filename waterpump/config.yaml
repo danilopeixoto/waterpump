@@ -1,7 +1,8 @@
 name: Water Pump
-version: "1.0"
+version: "1.0.0"
 slug: waterpump
 description: A water pump device.
+url: https://github.com/danilopeixoto/waterpump
 startup: application
 boot: auto
 host_network: true
