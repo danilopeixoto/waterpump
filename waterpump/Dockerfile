@@ -15,4 +15,4 @@ WORKDIR /app
 
 COPY --from=builder /app/waterpump /app/waterpump
 
-CMD ["/app/app"]
+CMD ["/app/waterpump"]

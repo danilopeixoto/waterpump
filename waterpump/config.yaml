@@ -14,7 +14,7 @@ options:
   broker_url: core-mosquitto
   broker_port: 1883
   device_id: "1"
-  device_name: "Water Pump 1"
+  device_name: "Water Pump"
 schema:
   broker_url: str
   broker_port: int
