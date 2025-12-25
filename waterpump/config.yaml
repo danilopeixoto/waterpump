@@ -5,6 +5,12 @@ description: A water pump device.
 startup: application
 boot: auto
 host_network: true
+arch:
+  - amd64
+  - aarch64
+  - armv7
+  - armhf
+  - i386
 services:
   - mqtt:need
 options:
