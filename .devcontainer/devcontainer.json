@@ -1,0 +1,21 @@
+{
+    "name": "waterpump",
+    "service": "waterpump",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "none",
+    "postCreateCommand": "make",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "editor.formatOnSave": true
+            },
+            "extensions": [
+                "EditorConfig.EditorConfig",
+                "golang.Go"
+            ]
+        }
+    }
+}

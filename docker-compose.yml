@@ -1,0 +1,16 @@
+services:
+  waterpump:
+    image: mcr.microsoft.com/devcontainers/go:1.24
+    command: sleep infinity
+    volumes:
+      - .:/workspace
+      - ./.config/waterpump/options.json:/data/options.json
+    depends_on:
+      - broker
+
+  broker:
+    image: eclipse-mosquitto:2.0
+    ports:
+      - 1883:1883
+    volumes:
+      - ./.config/broker/mosquitto.conf:/mosquitto/config/mosquitto.conf
