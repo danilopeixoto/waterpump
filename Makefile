@@ -10,7 +10,7 @@ dependencies:
 
 build:
 	mkdir -p $(BUILD_DIR)
-	CGO_ENABLED=0 go -C $(SOURCE_DIR) build -o ../$(BUILD_DIR)/waterpump
+	go -C $(SOURCE_DIR) build -o ../$(BUILD_DIR)/waterpump
 
 clean:
 	rm -rf $(BUILD_DIR)
