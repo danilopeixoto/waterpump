@@ -11,6 +11,7 @@ import (
 	"time"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/stianeikeland/go-rpio/v4"
 )
 
 const OptionsFile = "/data/options.json"
@@ -31,11 +32,13 @@ var (
 	TemperatureTopic  string
 	PowerSetTopic     string
 	PowerStateTopic   string
+	LedPin            rpio.Pin
 )
 
 func main() {
 	loadOptions()
 	buildTopics()
+	initializeLed()
 
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(fmt.Sprintf("tcp://%s:%d", Options.BrokerURL, Options.BrokerPort))
@@ -82,6 +85,7 @@ func main() {
 		case <-sig:
 			client.Publish(AvailabilityTopic, 1, true, "offline")
 			client.Disconnect(250)
+			disposeLed()
 			return
 		}
 	}
@@ -114,6 +118,7 @@ func onConnect(client mqtt.Client) {
 func onMessage(client mqtt.Client, msg mqtt.Message) {
 	payload := string(msg.Payload())
 	client.Publish(PowerStateTopic, 1, true, payload)
+	updateLed(payload)
 }
 
 func publishDiscovery(client mqtt.Client) {
@@ -164,4 +169,29 @@ func publishDiscovery(client mqtt.Client) {
 func publishJSON(client mqtt.Client, topic string, payload any) {
 	data, _ := json.Marshal(payload)
 	client.Publish(topic, 1, true, data)
+}
+
+func initializeLed() {
+	if err := rpio.Open(); err != nil {
+		log.Println("Failed to open GPIO:", err)
+		return
+	}
+
+	LedPin = rpio.Pin(17)
+	LedPin.Output()
+	LedPin.Low()
+}
+
+func disposeLed() {
+	LedPin.Low()
+	rpio.Close()
+}
+
+func updateLed(state string) {
+	switch state {
+	case "ON":
+		LedPin.High()
+	case "OFF":
+		LedPin.Low()
+	}
 }

@@ -8,6 +8,9 @@ all: dependencies build
 dependencies:
 	go -C $(SOURCE_DIR) mod tidy
 
+format:
+	go -C $(SOURCE_DIR) fmt ./...
+
 build:
 	mkdir -p $(BUILD_DIR)
 	go -C $(SOURCE_DIR) build -o ../$(BUILD_DIR)/waterpump
