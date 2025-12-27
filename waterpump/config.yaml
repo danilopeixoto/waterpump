@@ -6,6 +6,8 @@ url: https://github.com/danilopeixoto/waterpump
 startup: application
 boot: auto
 host_network: false
+devices:
+  - /dev/gpiomem
 arch:
   - amd64
   - aarch64
