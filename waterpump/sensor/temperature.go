@@ -2,9 +2,11 @@ package sensor
 
 import (
 	"context"
-	"github.com/danilopeixoto/waterpump"
+	"fmt"
 	"math/rand"
 	"time"
+
+	"github.com/danilopeixoto/waterpump"
 )
 
 type TemperatureSensor struct {
@@ -24,7 +26,7 @@ func (t *TemperatureSensor) Run(ctx context.Context) {
 		case <-ticker.C:
 			t.telemetry <- waterpump.SensorTelemetry{
 				Entity: "temperature",
-				Value:  20 + rand.Float64()*10,
+				Value:  fmt.Sprintf("%.1f", 20+rand.Float64()*10),
 			}
 		}
 	}

@@ -32,8 +32,8 @@ type Actuator interface {
 
 type Communication interface {
 	Runnable
-	SetTelemetry(chan<- SensorTelemetry)
-	SetCommands(<-chan ActuatorCommand)
+	SetTelemetry(<-chan SensorTelemetry)
+	SetCommands(chan<- ActuatorCommand)
 }
 
 type SensorTelemetry struct {

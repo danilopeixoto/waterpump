@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/danilopeixoto/waterpump"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -29,8 +30,14 @@ type MqttCommunication struct {
 func (m *MqttCommunication) Initialize(ctx context.Context) error {
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(fmt.Sprintf("tcp://%s:%d", m.BrokerUrl, m.BrokerPort))
+
 	opts.SetClientID("device_" + m.DeviceId)
-	opts.SetCleanSession(true)
+	opts.SetCleanSession(false)
+	opts.SetAutoReconnect(true)
+	opts.SetKeepAlive(60)
+	opts.SetPingTimeout(10)
+	opts.SetConnectTimeout(30)
+	opts.SetMaxReconnectInterval(60)
 
 	base := "device/" + m.DeviceId
 	opts.SetWill(base+"/status", "offline", 1, true)
@@ -47,6 +54,10 @@ func (m *MqttCommunication) Initialize(ctx context.Context) error {
 		"name":         m.DeviceName,
 		"model":        m.DeviceModel,
 		"manufacturer": m.DeviceManufacturer,
+	}
+
+	opts.OnConnectionLost = func(c mqtt.Client, err error) {
+		log.Printf("Connection lost: %v\n", err)
 	}
 
 	opts.OnConnect = func(c mqtt.Client) {
