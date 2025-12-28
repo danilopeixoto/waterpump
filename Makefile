@@ -13,7 +13,7 @@ format:
 
 build:
 	mkdir -p $(BUILD_DIR)
-	go -C $(SOURCE_DIR) build -o ../$(BUILD_DIR)/waterpump
+	go -C $(SOURCE_DIR) build -o ../$(BUILD_DIR)/waterpump ./cmd/waterpump
 
 clean:
 	rm -rf $(BUILD_DIR)
