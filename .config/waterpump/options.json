@@ -4,5 +4,7 @@
     "broker_username": "waterpump",
     "broker_password": "default",
     "device_id": "1",
-    "device_name": "Water Pump"
+    "device_name": "Water Pump",
+    "device_model": "Diesel",
+    "device_manufacturer": "Tangerina"
 }

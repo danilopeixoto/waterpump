@@ -1,4 +1,4 @@
-module waterpump
+module github.com/danilopeixoto/waterpump
 
 go 1.24.0
 

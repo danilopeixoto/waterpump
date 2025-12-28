@@ -19,7 +19,9 @@ options:
   broker_username: waterpump
   broker_password: default
   device_id: "1"
-  device_name: "Water Pump"
+  device_name: Water Pump
+  device_model: Diesel
+  device_manufacturer: Tangerina
 schema:
   broker_url: str
   broker_port: int
@@ -27,3 +29,5 @@ schema:
   broker_password: password
   device_id: str
   device_name: str
+  device_model: str
+  device_manufacturer: str
