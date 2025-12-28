@@ -7,7 +7,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o waterpump
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o /app/waterpump ./cmd/waterpump
 
 FROM alpine:3.22
 
