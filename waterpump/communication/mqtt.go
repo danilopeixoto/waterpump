@@ -32,12 +32,8 @@ func (m *MqttCommunication) Initialize(ctx context.Context) error {
 	opts.AddBroker(fmt.Sprintf("tcp://%s:%d", m.BrokerUrl, m.BrokerPort))
 
 	opts.SetClientID("device_" + m.DeviceId)
-	opts.SetCleanSession(false)
+	opts.SetCleanSession(true)
 	opts.SetAutoReconnect(true)
-	opts.SetKeepAlive(60)
-	opts.SetPingTimeout(10)
-	opts.SetConnectTimeout(30)
-	opts.SetMaxReconnectInterval(60)
 
 	base := "device/" + m.DeviceId
 	opts.SetWill(base+"/status", "offline", 1, true)
