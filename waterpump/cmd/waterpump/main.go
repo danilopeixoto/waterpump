@@ -37,12 +37,19 @@ func main() {
 		DeviceName:         cfg.DeviceName,
 		DeviceModel:        cfg.DeviceModel,
 		DeviceManufacturer: cfg.DeviceManufacturer,
-		DiscoveryProviders: []waterpump.Discoverable{sensor, actuator},
+		DiscoveryProviders: []waterpump.Discoverable{
+			sensor,
+			actuator,
+		},
 	}
 
 	device := waterpump.Device{
-		Id:         cfg.DeviceId,
-		Components: []waterpump.Runnable{sensor, actuator, mqtt},
+		Id: cfg.DeviceId,
+		Components: []waterpump.Runnable{
+			sensor,
+			actuator,
+			mqtt,
+		},
 	}
 
 	ctx := context.Background()

@@ -41,6 +41,7 @@ func (d *Device) Initialize(ctx context.Context) error {
 			return err
 		}
 	}
+
 	return nil
 }
 
