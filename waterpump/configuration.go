@@ -15,14 +15,17 @@ type Configuration struct {
 	DeviceName         string `json:"device_name"`
 	DeviceModel        string `json:"device_model"`
 	DeviceManufacturer string `json:"device_manufacturer"`
+
+	ControllerPortName string `json:"controller_port_name"`
+	ControllerUnitId   int    `json:"controller_unit_id"`
 }
 
 type ConfigurationLoader struct {
 	Path string
 }
 
-func (l ConfigurationLoader) Load() (Configuration, error) {
-	data, err := os.ReadFile(l.Path)
+func (c ConfigurationLoader) Load() (Configuration, error) {
+	data, err := os.ReadFile(c.Path)
 	if err != nil {
 		return Configuration{}, err
 	}

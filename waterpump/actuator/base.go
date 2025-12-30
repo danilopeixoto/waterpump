@@ -4,10 +4,10 @@ import (
 	"github.com/danilopeixoto/waterpump"
 )
 
-type ActuatorBase struct {
+type BaseActuator struct {
 	commands <-chan waterpump.ActuatorCommand
 }
 
-func (a *ActuatorBase) SetCommands(ch <-chan waterpump.ActuatorCommand) {
-	a.commands = ch
+func (b *BaseActuator) SetCommands(ch <-chan waterpump.ActuatorCommand) {
+	b.commands = ch
 }

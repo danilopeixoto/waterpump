@@ -4,15 +4,15 @@ import (
 	"github.com/danilopeixoto/waterpump"
 )
 
-type CommunicationBase struct {
+type BaseCommunication struct {
 	telemetry <-chan waterpump.SensorTelemetry
 	commands  chan<- waterpump.ActuatorCommand
 }
 
-func (c *CommunicationBase) SetTelemetry(ch <-chan waterpump.SensorTelemetry) {
-	c.telemetry = ch
+func (b *BaseCommunication) SetTelemetry(ch <-chan waterpump.SensorTelemetry) {
+	b.telemetry = ch
 }
 
-func (c *CommunicationBase) SetCommands(ch chan<- waterpump.ActuatorCommand) {
-	c.commands = ch
+func (b *BaseCommunication) SetCommands(ch chan<- waterpump.ActuatorCommand) {
+	b.commands = ch
 }

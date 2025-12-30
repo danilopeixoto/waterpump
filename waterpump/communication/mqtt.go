@@ -11,7 +11,7 @@ import (
 )
 
 type MqttCommunication struct {
-	CommunicationBase
+	BaseCommunication
 
 	BrokerUrl      string
 	BrokerPort     int
@@ -36,7 +36,7 @@ func (m *MqttCommunication) Initialize(ctx context.Context) error {
 	opts.SetAutoReconnect(true)
 
 	base := "device/" + m.DeviceId
-	opts.SetWill(base+"/status", "offline", 1, true)
+	opts.SetWill(base+"/status", "Offline", 1, true)
 
 	if m.BrokerUsername != "" {
 		opts.SetUsername(m.BrokerUsername)
@@ -53,13 +53,13 @@ func (m *MqttCommunication) Initialize(ctx context.Context) error {
 	}
 
 	opts.OnConnectionLost = func(c mqtt.Client, err error) {
-		log.Printf("Connection lost: %v\n", err)
+		log.Printf("broker connection lost: %v\n", err)
 	}
 
 	opts.OnConnect = func(c mqtt.Client) {
 		base := "device/" + m.DeviceId
 		c.Subscribe(base+"/+/set", 1, nil)
-		c.Publish(base+"/status", 1, true, "online")
+		c.Publish(base+"/status", 1, true, "Online")
 
 		for _, p := range m.DiscoveryProviders {
 			for _, e := range p.DiscoveryEntities() {
@@ -67,8 +67,8 @@ func (m *MqttCommunication) Initialize(ctx context.Context) error {
 					"unique_id":             m.DeviceId + "_" + e.Entity,
 					"name":                  e.Entity,
 					"availability_topic":    base + "/status",
-					"payload_available":     "online",
-					"payload_not_available": "offline",
+					"payload_available":     "Online",
+					"payload_not_available": "Offline",
 					"state_topic":           base + "/" + e.Entity + "/state",
 					"device":                deviceInfo,
 				}
@@ -128,10 +128,17 @@ func (m *MqttCommunication) Run(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case t := <-m.telemetry:
+			var payload string
+			switch v := t.Value.(type) {
+			case map[string]any:
+				payload = string(mustJSON(v))
+			default:
+				payload = fmt.Sprintf("%v", t.Value)
+			}
 			m.client.Publish(
 				base+"/"+t.Entity+"/state",
 				1, true,
-				fmt.Sprintf("%v", t.Value),
+				payload,
 			)
 		}
 	}
@@ -139,7 +146,7 @@ func (m *MqttCommunication) Run(ctx context.Context) {
 
 func (m *MqttCommunication) Deinitialize() error {
 	base := "device/" + m.DeviceId
-	m.client.Publish(base+"/status", 1, true, "offline")
+	m.client.Publish(base+"/status", 1, true, "Offline")
 	m.client.Disconnect(250)
 
 	return nil

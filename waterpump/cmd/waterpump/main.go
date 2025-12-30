@@ -7,8 +7,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/stianeikeland/go-rpio/v4"
-
 	"github.com/danilopeixoto/waterpump"
 	"github.com/danilopeixoto/waterpump/actuator"
 	"github.com/danilopeixoto/waterpump/communication"
@@ -22,10 +20,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	sensor := &sensor.TemperatureSensor{}
-	actuator := &actuator.LedActuator{
-		Entity: "power",
-		Pin:    rpio.Pin(17),
+	sensor := &sensor.MebaySensor{
+		DeviceId:            cfg.DeviceId,
+		ControllerPortName:  cfg.ControllerPortName,
+		ControllerUnitId:    uint8(cfg.ControllerUnitId),
+		PollIntervalSeconds: 2,
+	}
+
+	actuator := &actuator.MebayActuator{
+		DeviceId:           cfg.DeviceId,
+		ControllerPortName: cfg.ControllerPortName,
+		ControllerUnitId:   uint8(cfg.ControllerUnitId),
 	}
 
 	mqtt := &communication.MqttCommunication{

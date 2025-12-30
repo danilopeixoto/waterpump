@@ -4,10 +4,10 @@ import (
 	"github.com/danilopeixoto/waterpump"
 )
 
-type SensorBase struct {
+type BaseSensor struct {
 	telemetry chan<- waterpump.SensorTelemetry
 }
 
-func (s *SensorBase) SetTelemetry(ch chan<- waterpump.SensorTelemetry) {
-	s.telemetry = ch
+func (b *BaseSensor) SetTelemetry(ch chan<- waterpump.SensorTelemetry) {
+	b.telemetry = ch
 }

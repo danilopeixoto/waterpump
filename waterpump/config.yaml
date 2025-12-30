@@ -6,8 +6,6 @@ url: https://github.com/danilopeixoto/waterpump
 startup: application
 boot: auto
 host_network: false
-devices:
-  - /dev/gpiomem
 arch:
   - amd64
   - aarch64
@@ -22,6 +20,8 @@ options:
   device_name: Water Pump
   device_model: Diesel
   device_manufacturer: Tangerina
+  controller_port_name: /dev/ttyUSB0
+  controller_unit_id: 16
 schema:
   broker_url: str
   broker_port: int
@@ -31,3 +31,5 @@ schema:
   device_name: str
   device_model: str
   device_manufacturer: str
+  controller_port_name: str
+  controller_unit_id: int
