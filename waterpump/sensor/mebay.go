@@ -22,7 +22,6 @@ type MebaySensor struct {
 type MebaySensorData struct {
 	Rpm                float32
 	WaterTemperature   float32
-	OilTemperature     float32
 	OilPressure        float32
 	CurrentRunningTime uint64
 	TotalRunningTime   uint64
@@ -406,12 +405,6 @@ func (m *MebaySensor) readSensorData() (*MebaySensorData, error) {
 	}
 	data.WaterTemperature = float32(waterTemperature)
 
-	oilTemperature, err := m.client.ReadRegister(0x1026, modbus.HOLDING_REGISTER)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read oil temperature: %w", err)
-	}
-	data.OilTemperature = float32(oilTemperature)
-
 	oilPressure, err := m.client.ReadRegister(0x1024, modbus.HOLDING_REGISTER)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read oil pressure: %w", err)
@@ -505,11 +498,6 @@ func (m *MebaySensor) sendTelemetry(data *MebaySensorData) {
 	m.telemetry <- waterpump.SensorTelemetry{
 		Entity: "water_temperature",
 		Value:  data.WaterTemperature,
-	}
-
-	m.telemetry <- waterpump.SensorTelemetry{
-		Entity: "oil_temperature",
-		Value:  data.OilTemperature,
 	}
 
 	m.telemetry <- waterpump.SensorTelemetry{
